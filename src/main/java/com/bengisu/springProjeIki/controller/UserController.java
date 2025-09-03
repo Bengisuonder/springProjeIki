@@ -1,6 +1,7 @@
 package com.bengisu.springProjeIki.controller;
 
-import com.bengisu.springProjeIki.model.User;
+import com.bengisu.springProjeIki.dto.request.UserRequest;
+import com.bengisu.springProjeIki.dto.response.UserResponse;
 import com.bengisu.springProjeIki.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,21 +15,21 @@ public class UserController
     private final UserService userService;
 
     @PostMapping(path = "/create")
-    public User createUser(@RequestBody User user)
+    public UserResponse createUser(@RequestBody UserRequest userRequest)
     {
-        return userService.createUser(user);
+        return userService.createUser(userRequest);
     }
 
     @GetMapping(path = "/list")
-    List<User> getAllUsers()
+    List<UserResponse> getAllUsers()
     {
         return userService.getAllUsers();
     }
 
     @PutMapping("/update/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user)
+    public UserResponse updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest)
     {
-        return userService.updateUser(id, user);
+        return userService.updateUser(id, userRequest);
     }
 
     @DeleteMapping("/delete/{id}")
