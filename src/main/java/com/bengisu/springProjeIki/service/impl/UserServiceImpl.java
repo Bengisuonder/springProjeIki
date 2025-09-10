@@ -33,10 +33,6 @@ public class UserServiceImpl implements UserService
         return userResponse;
          */
         User user = modelMapper.map(userRequest, User.class);
-        if (user.getUserName() == null || user.getUserName().isBlank())
-        {
-           throw new RuntimeException("Username cannot be empty!");
-        }
         userRepository.save(user);
         return new UserResponse(user.getUserName(), "User created.");
     }
