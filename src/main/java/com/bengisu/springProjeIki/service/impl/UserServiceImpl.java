@@ -2,12 +2,14 @@ package com.bengisu.springProjeIki.service.impl;
 
 import com.bengisu.springProjeIki.dto.request.UserRequest;
 import com.bengisu.springProjeIki.dto.response.UserResponse;
+import com.bengisu.springProjeIki.exception.UserNotFoundException;
 import com.bengisu.springProjeIki.model.User;
 import com.bengisu.springProjeIki.repository.UserRepository;
 import com.bengisu.springProjeIki.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public class UserServiceImpl implements UserService
     private final ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public UserResponse createUser(UserRequest userRequest)
     {
         /*
@@ -33,11 +36,16 @@ public class UserServiceImpl implements UserService
         return userResponse;
          */
         User user = modelMapper.map(userRequest, User.class);
+        if (user.getUsername() == null || user.getUsername().isBlank())
+        {
+            throw new RuntimeException("Username cannot be empty!");
+        }
         userRepository.save(user);
-        return new UserResponse(user.getUserName(), "User created.");
+        return new UserResponse(user.getUsername(), "User created.");
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserResponse> getAllUsers()
     {
         /*
@@ -47,7 +55,7 @@ public class UserServiceImpl implements UserService
         for (User u : users)
         {
             UserResponse userResponse = new UserResponse();
-            userResponse.setUserName(u.getUserName());
+            userResponse.setUsername(u.getUsername());
             userResponse.setMessage("Kullanıcılar listelendi.");
             responses.add(userResponse);
         }
@@ -64,11 +72,20 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
+    public UserResponse getUser(Long id)
+    {
+        User getUser = userRepository.findById(id).orElseThrow(()->new UserNotFoundException("Id'ye kayıtlı kullanıcı bulunamadı. "+id));
+        UserResponse userResponse = modelMapper.map(getUser, UserResponse.class);
+        return userResponse;
+    }
+
+    @Override
+    @Transactional
     public UserResponse updateUser(Long id, UserRequest userRequest)
     {
         /*
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Id'ye kayıtlı kullanıcı bulunamadı. "+id));
-        user.setUserName(userRequest.getUserName());
+        user.setUsername(userRequest.getUsername());
         user.setEmail(userRequest.getEmail());
         user.setPassword(userRequest.getPassword());
         userRepository.save(user);
@@ -79,10 +96,11 @@ public class UserServiceImpl implements UserService
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Id'ye kayıtlı kullanıcı bulunamadı: " + id));
         modelMapper.map(userRequest, user);
         User updatedUser = userRepository.save(user);
-        return new UserResponse(user.getUserName(), "KUllanıcı başarıyla güncellendi.");
+        return new UserResponse(user.getUsername(), "KUllanıcı başarıyla güncellendi.");
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id)
     {
         /*

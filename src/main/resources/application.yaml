@@ -1,0 +1,29 @@
+server:
+  port: 8086
+
+
+spring:
+  application:
+    name: springProjeIki
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dto_db
+    username: postgres
+    password: 16
+    driver-class-name: org.postgresql.Driver
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: spring_iki
+        format_sql: true
+
+
+security:
+jwt:
+  secret-key: j611iut3q0fcVlLly+z0N9hRupN5wPB5AksMzzTItWg=

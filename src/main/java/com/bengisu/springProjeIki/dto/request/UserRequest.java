@@ -15,7 +15,7 @@ import lombok.Setter;
 public class UserRequest
 {
     @NotBlank(message = "Kullanıcı adı boş bırakılamaz.")
-    private String userName;
+    private String username;
     @Email(message = "Geçersiz e-mail adresi.")
     private String email;
     @Size(min = 8, max = 15, message = "Şifreniz 8 ile 15 karakter arasında olmak zorundadır.")

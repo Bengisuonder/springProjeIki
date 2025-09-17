@@ -1,4 +1,4 @@
-package com.bengisu.springProjeIki.dto.response;
+package com.bengisu.springProjeIki.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse
+@NoArgsConstructor
+public class RegisterResponse
 {
-    private String username;
     private String message;
+    private String token;
 }

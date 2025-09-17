@@ -8,6 +8,7 @@ public interface UserService
 {
     UserResponse createUser(UserRequest userRequest);
     List<UserResponse> getAllUsers();
+    UserResponse getUser(Long id);
     UserResponse updateUser(Long id, UserRequest userRequest);
     void deleteUser(Long id);
 }
